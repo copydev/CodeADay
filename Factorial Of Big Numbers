@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+void multiply(int *n, int index, int &size){
+    int carry = 0;
+
+    for(int i =0 ;i<size;i++){
+        int multiply = n[i]* index; 
+        int ans  = multiply + carry;
+        n[i] = ans%10;
+        carry = ans/10;
+    }
+
+    while(carry!= 0){
+        n[size] = carry%10;
+        size++;
+        carry /= 10;
+    }
+
+
+
+}
+
+void bigFactorial (int num){
+    int *n = new int[1000]{0};
+
+    n[0] = 1;
+
+    int size = 1;
+
+    for(int i = 2; i<= num; i++){
+        multiply(n, i, size);
+    }
+
+    for(int i = size-1;i>= 0; i--){
+        cout<<n[i];
+    }
+
+}
+
+
+
+int main() {
+   // cout<<"Hello World!";
+    bigFactorial(100);
+
+    return 0;
+}
