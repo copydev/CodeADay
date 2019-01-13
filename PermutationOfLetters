@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+void printPermutations(char ch[], int size, char res[], int index){
+    if(size == 1 ){
+        res[index] = ch[0]; 
+        for(int i =0;i<= index;i++){
+            cout<<res[i];
+        }
+        cout << endl;
+
+        return;
+    }
+
+    for(int i = 0;i<size;i++){
+        
+        char newCh[size-1];
+        int ptr =0;
+        for(int j =0;j<size;j++){
+            if(j == i){
+                continue;
+            }
+            newCh[ptr] = ch[j];
+            ptr++;
+        }
+
+        res[index] = ch[i];
+
+        printPermutations(newCh,size-1,res,index+1);
+
+    }
+
+}
+
+int main(){
+
+    char letters[] = {'A','B','C','D','E','F','G','H','I','J'};
+    int size = 10;
+
+    char res[10];
+
+    printPermutations(letters,size,res,0);
+
+    return 0;
+}
+
+
