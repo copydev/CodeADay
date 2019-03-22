@@ -1,0 +1,121 @@
+#include<iostream>
+#include<vector>
+#define ll long long
+#define mod 1000000000
+
+using namespace std;
+
+ll k;
+vector<ll> a, b,c;
+
+vector<vector<ll>> multiply(vector<vector<ll>> A, vector<vector<ll>> B){
+
+    //third matrix
+
+    vector <vector<ll>> C(k+1,vector<ll>(k+1));
+
+    for(int i =1 ; i<=k;i++){
+        for(int j =1;j<=k;j++){
+            for(int z =1;z<=k; z++){
+                C[i][j] = (C[i][j] + (A[i][z] * B[z][j])% mod)%mod;
+            }
+        }
+    }
+
+    return C;
+}
+
+vector<vector<ll>> pow (vector<vector<ll>> T , ll n){
+    if( n == 1){
+        return T;
+    }
+    if(n &1 ){
+        return multiply(T , pow(T, n-1));
+    }
+    else{
+        vector<vector<ll>> X = pow(T, n/2);
+        return multiply(X,X);
+    }
+
+
+}
+
+ll compute(ll n){
+    if(n ==0){
+        return 0;
+    }
+
+    // suppose n<= k
+    if(n<= k){
+        return b[n-1];
+    }
+
+    //Otherwise we use matrix exponentiation, indexing 1 se
+
+    vector <ll> F1(k+1);
+
+    for(int i =1 ;i<=k;i++){
+        F1[i] = b[i-1];
+    }
+
+
+    //Transformation matrix 
+
+    vector<vector<ll> > T (k+1, vector<ll> (k+1));
+
+    for(int i = 1; i<=k;i++){
+        for(int j =1 ;j<=k;j++){
+            if(i<k){
+                if(j == i+1){
+                    T[i][j] = 1;
+                }
+                else{
+                    T[i][j] = 0;
+                }
+            }
+            else{
+                T[i][j] = c[k-j];
+            }
+        }
+    }
+
+    T = pow(T , n-1);
+
+    ll res =0;
+    for(int i = 1; i<=k;i++){
+        res = (res + (T[1][i]* F1[i])%mod)%mod;
+    }
+    
+    return res;
+}
+
+int main(){
+    ll t, num , n;
+    cin>>t;
+    while(t--){
+        cin>>k;
+
+        //F1
+        for(int i =0;i<k;i++){
+            cin>>num;
+            b.push_back(num);
+        }
+
+
+        for(int i =0;i<k;i++){
+            cin>>num;
+            c.push_back(num);
+        }
+
+        cin>>n;
+
+        cout<< compute(n)<<endl;
+
+        b.clear();
+        c.clear();
+        
+    }
+
+  return 0;
+
+}
